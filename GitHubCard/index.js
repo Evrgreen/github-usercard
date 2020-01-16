@@ -187,7 +187,16 @@ function splicer(data, skeleton) {
   return templateArray;
 }
 
-splicer(dummy_data, elementTags);
+function creator(obj) {
+  console.log(obj);
+  return Object.assign(document.createElement(obj.tagName), obj.props || {});
+}
+
+const newArray = splicer(dummy_data, elementTags);
+const newArray1 = newArray.map(element => {
+  return creator(element);
+});
+console.log(newArray1);
 /* List of LS Instructors Github username's: 
   tetondan
   dustinmyers
