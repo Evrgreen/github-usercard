@@ -172,15 +172,21 @@ const elementTags = [
 
 function splicer(data, skeleton) {
   skeleton.forEach(item => {
-    console.log();
-    console.log(data[skeleton.name]);
-    // skeleton.props =
-    // if (item.name in dummy_data) {
-    //   console.log("True");
-    // } else if (item.name in dummy_data.data.Keys) {
-    //   console.log("True 2");
-    // } else {
-    // console.log("false");
+    if (item.name in dummy_data) {
+      // console.log(dummy_data[item.name]);
+      // console.log(item.props);
+      if ("textContent" in item.props) {
+        console.log(item.props);
+        item.props[`textContent`] = data[item.name];
+        // console.log(item);
+      }
+      item.props = data[item.name];
+      // console.log(item);
+    } else if (item.name in dummy_data) {
+      console.log("True 2");
+    } else {
+      // console.log("false");
+    }
   });
 }
 
