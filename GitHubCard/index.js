@@ -14,41 +14,37 @@
 //     console.log("the data was not returned", error);
 //   });
 const dummy_data = {
-  data: {
-    login: "Evrgreen",
-    id: 29643642,
-    node_id: "MDQ6VXNlcjI5NjQzNjQy",
-    avatar_url: "https://avatars2.githubusercontent.com/u/29643642?v=4",
-    gravatar_id: "",
-    url: "https://api.github.com/users/Evrgreen",
-    html_url: "https://github.com/Evrgreen",
-    followers_url: "https://api.github.com/users/Evrgreen/followers",
-    following_url:
-      "https://api.github.com/users/Evrgreen/following{/other_user}",
-    gists_url: "https://api.github.com/users/Evrgreen/gists{/gist_id}",
-    starred_url: "https://api.github.com/users/Evrgreen/starred{/owner}{/repo}",
-    subscriptions_url: "https://api.github.com/users/Evrgreen/subscriptions",
-    organizations_url: "https://api.github.com/users/Evrgreen/orgs",
-    repos_url: "https://api.github.com/users/Evrgreen/repos",
-    events_url: "https://api.github.com/users/Evrgreen/events{/privacy}",
-    received_events_url:
-      "https://api.github.com/users/Evrgreen/received_events",
-    type: "User",
-    site_admin: false,
-    name: "Robert Carsten",
-    company: null,
-    blog: "",
-    location: null,
-    email: null,
-    hireable: null,
-    bio: null,
-    public_repos: 26,
-    public_gists: 0,
-    followers: 11,
-    following: 4,
-    created_at: "2017-06-22T22:16:12Z",
-    updated_at: "2020-01-16T15:30:31Z"
-  }
+  login: "Evrgreen",
+  id: 29643642,
+  node_id: "MDQ6VXNlcjI5NjQzNjQy",
+  avatar_url: "https://avatars2.githubusercontent.com/u/29643642?v=4",
+  gravatar_id: "",
+  url: "https://api.github.com/users/Evrgreen",
+  html_url: "https://github.com/Evrgreen",
+  followers_url: "https://api.github.com/users/Evrgreen/followers",
+  following_url: "https://api.github.com/users/Evrgreen/following{/other_user}",
+  gists_url: "https://api.github.com/users/Evrgreen/gists{/gist_id}",
+  starred_url: "https://api.github.com/users/Evrgreen/starred{/owner}{/repo}",
+  subscriptions_url: "https://api.github.com/users/Evrgreen/subscriptions",
+  organizations_url: "https://api.github.com/users/Evrgreen/orgs",
+  repos_url: "https://api.github.com/users/Evrgreen/repos",
+  events_url: "https://api.github.com/users/Evrgreen/events{/privacy}",
+  received_events_url: "https://api.github.com/users/Evrgreen/received_events",
+  type: "User",
+  site_admin: false,
+  name: "Robert Carsten",
+  company: null,
+  blog: "",
+  location: null,
+  email: null,
+  hireable: null,
+  bio: null,
+  public_repos: 26,
+  public_gists: 0,
+  followers: 11,
+  following: 4,
+  created_at: "2017-06-22T22:16:12Z",
+  updated_at: "2020-01-16T15:30:31Z"
 };
 
 /* Step 2: Inspect and study the data coming back, this is YOUR 
@@ -174,7 +170,21 @@ const elementTags = [
   }
 ];
 
-function splicer(data, skeleton) {}
+function splicer(data, skeleton) {
+  skeleton.forEach(item => {
+    console.log();
+    console.log(data[skeleton.name]);
+    // skeleton.props =
+    // if (item.name in dummy_data) {
+    //   console.log("True");
+    // } else if (item.name in dummy_data.data.Keys) {
+    //   console.log("True 2");
+    // } else {
+    // console.log("false");
+  });
+}
+
+splicer(dummy_data, elementTags);
 /* List of LS Instructors Github username's: 
   tetondan
   dustinmyers
