@@ -98,7 +98,7 @@ const elementTags = [
     }
   },
   {
-    name: "user-image",
+    name: "avatar_url",
     tagName: "img",
     props: {
       src: ""
@@ -171,23 +171,20 @@ const elementTags = [
 ];
 
 function splicer(data, skeleton) {
+  templateArray = [];
   skeleton.forEach(item => {
     if (item.name in dummy_data) {
-      // console.log(dummy_data[item.name]);
-      // console.log(item.props);
       if ("textContent" in item.props) {
-        console.log(item.props);
         item.props[`textContent`] = data[item.name];
-        // console.log(item);
+      } else if ("href" in item.props) {
+        item.props["href"] = data[item.name];
+      } else if ("src" in item.props) {
+        item.props["src"] = data[item.name];
       }
-      item.props = data[item.name];
-      // console.log(item);
-    } else if (item.name in dummy_data) {
-      console.log("True 2");
-    } else {
-      // console.log("false");
     }
+    templateArray.push(item);
   });
+  return templateArray;
 }
 
 splicer(dummy_data, elementTags);
