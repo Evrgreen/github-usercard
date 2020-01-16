@@ -3,6 +3,54 @@
            https://api.github.com/users/<your name>
 */
 
+// const dummy_data = [];
+// axios
+//   .get(`https://api.github.com/users/evrgreen`)
+//   .then(response => {
+//     console.log(response);
+//     dummy_data.push(response);
+//   })
+//   .catch(error => {
+//     console.log("the data was not returned", error);
+//   });
+const dummy_data = {
+  data: {
+    login: "Evrgreen",
+    id: 29643642,
+    node_id: "MDQ6VXNlcjI5NjQzNjQy",
+    avatar_url: "https://avatars2.githubusercontent.com/u/29643642?v=4",
+    gravatar_id: "",
+    url: "https://api.github.com/users/Evrgreen",
+    html_url: "https://github.com/Evrgreen",
+    followers_url: "https://api.github.com/users/Evrgreen/followers",
+    following_url:
+      "https://api.github.com/users/Evrgreen/following{/other_user}",
+    gists_url: "https://api.github.com/users/Evrgreen/gists{/gist_id}",
+    starred_url: "https://api.github.com/users/Evrgreen/starred{/owner}{/repo}",
+    subscriptions_url: "https://api.github.com/users/Evrgreen/subscriptions",
+    organizations_url: "https://api.github.com/users/Evrgreen/orgs",
+    repos_url: "https://api.github.com/users/Evrgreen/repos",
+    events_url: "https://api.github.com/users/Evrgreen/events{/privacy}",
+    received_events_url:
+      "https://api.github.com/users/Evrgreen/received_events",
+    type: "User",
+    site_admin: false,
+    name: "Robert Carsten",
+    company: null,
+    blog: "",
+    location: null,
+    email: null,
+    hireable: null,
+    bio: null,
+    public_repos: 26,
+    public_gists: 0,
+    followers: 11,
+    following: 4,
+    created_at: "2017-06-22T22:16:12Z",
+    updated_at: "2020-01-16T15:30:31Z"
+  }
+};
+
 /* Step 2: Inspect and study the data coming back, this is YOUR 
    github info! You will need to understand the structure of this 
    data in order to use it to build your component function 
@@ -30,22 +78,103 @@ const followersArray = [];
           Using DOM methods and properties, create a component that will return the following DOM element:
 
 <div class="card">
-  <img src={image url of user} />
+  <img src={image url of user} /> data{avatar_url}
   <div class="card-info">
-    <h3 class="name">{users name}</h3>
-    <p class="username">{users user name}</p>
-    <p>Location: {users location}</p>
+    <h3 class="name">{users name}</h3> //Evrgreen data{login}
+    <p class="username">{users user name}</p>  Robert Carsten data{name}
+    <p>Location: {users location}</p> data{location}
     <p>Profile:  
-      <a href={address to users github page}>{address to users github page}</a>
+      <a href={address to users github page}>{address to users github page}</a> data{url}
     </p>
-    <p>Followers: {users followers count}</p>
-    <p>Following: {users following count}</p>
-    <p>Bio: {users bio}</p>
+    <p>Followers: {users followers count}</p> data{followers}
+    <p>Following: {users following count}</p> data{following}
+    <p>Bio: {users bio}</p> data{bio}
   </div>
 </div>
 
 */
+const elementTags = [
+  {
+    name: "card",
+    tagName: "div",
+    props: {
+      className: "card"
+    }
+  },
+  {
+    name: "user-image",
+    tagName: "img",
+    props: {
+      src: ""
+    }
+  },
+  {
+    name: "card-info",
+    tagName: "div",
+    props: {
+      className: "card-info"
+    }
+  },
+  {
+    name: "name",
+    tagName: "h3",
+    props: {
+      className: "name",
+      textContent: ""
+    }
+  },
+  {
+    name: "login",
+    tagName: "p",
+    props: {
+      textContent: ""
+    }
+  },
+  {
+    name: "location",
+    tagName: "p",
+    props: {
+      textContent: "Location:"
+    }
+  },
+  {
+    name: "profile",
+    tagName: "p",
+    props: {
+      textContent: "Profile"
+    }
+  },
+  {
+    name: "url",
+    tagName: "a",
+    props: {
+      href: ""
+    }
+  },
+  {
+    name: "followers",
+    tagName: "p",
+    props: {
+      textContent: "Followers: "
+    }
+  },
+  {
+    name: "following",
+    tagName: "p",
+    props: {
+      textContent: "Following: "
+    }
+  },
+  {
+    name: "bio",
+    tagName: "p",
+    props: {
+      textContent: ""
+    }
+  }
+];
 
+function splicer(data, skeleton) {}
 /* List of LS Instructors Github username's: 
   tetondan
   dustinmyers
