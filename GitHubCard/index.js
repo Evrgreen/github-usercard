@@ -191,12 +191,23 @@ function creator(obj) {
   console.log(obj);
   return Object.assign(document.createElement(obj.tagName), obj.props || {});
 }
+function stitcher(parent, child = "", temp = "") {
+  // takes a parent and child and compares them
+  // checks if there is a child
+  // checks if child is a div, if it is a div need to move current parent into temp then rerun function
+  // return parent
+}
 
 const newArray = splicer(dummy_data, elementTags);
 const newArray1 = newArray.map(element => {
   return creator(element);
 });
 console.log(newArray1);
+// console.log(newArray[0].tagName == newArray[2].tagName);
+
+// stitcher.map(item => {
+//   return;
+// });
 /* List of LS Instructors Github username's: 
   tetondan
   dustinmyers
