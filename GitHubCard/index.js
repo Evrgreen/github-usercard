@@ -4,48 +4,21 @@
 */
 
 // const dummy_data = [];
-// axios
-//   .get(`https://api.github.com/users/evrgreen`)
-//   .then(response => {
-//     console.log(response);
-//     dummy_data.push(response);
-//   })
-//   .catch(error => {
-//     console.log("the data was not returned", error);
-//   });
-const dummy_data = {
-  login: "Evrgreen",
-  id: 29643642,
-  node_id: "MDQ6VXNlcjI5NjQzNjQy",
-  avatar_url: "https://avatars2.githubusercontent.com/u/29643642?v=4",
-  gravatar_id: "",
-  url: "https://api.github.com/users/Evrgreen",
-  html_url: "https://github.com/Evrgreen",
-  followers_url: "https://api.github.com/users/Evrgreen/followers",
-  following_url: "https://api.github.com/users/Evrgreen/following{/other_user}",
-  gists_url: "https://api.github.com/users/Evrgreen/gists{/gist_id}",
-  starred_url: "https://api.github.com/users/Evrgreen/starred{/owner}{/repo}",
-  subscriptions_url: "https://api.github.com/users/Evrgreen/subscriptions",
-  organizations_url: "https://api.github.com/users/Evrgreen/orgs",
-  repos_url: "https://api.github.com/users/Evrgreen/repos",
-  events_url: "https://api.github.com/users/Evrgreen/events{/privacy}",
-  received_events_url: "https://api.github.com/users/Evrgreen/received_events",
-  type: "User",
-  site_admin: false,
-  name: "Robert Carsten",
-  company: null,
-  blog: "",
-  location: null,
-  email: null,
-  hireable: null,
-  bio: null,
-  public_repos: 26,
-  public_gists: 0,
-  followers: 11,
-  following: 4,
-  created_at: "2017-06-22T22:16:12Z",
-  updated_at: "2020-01-16T15:30:31Z"
-};
+axios
+  .get(`https://api.github.com/users/evrgreen`)
+  .then(response => {
+    cardConstructor(response.data, elementTags);
+    return axios.get(response.data.followers_url);
+  })
+  .then(response => {
+    console.log(response.data);
+    response.data.forEach(dataset => {
+      cardConstructor(dataset.data);
+    });
+  })
+  .catch(error => {
+    console.log("the data was not returned", error);
+  });
 
 /* Step 2: Inspect and study the data coming back, this is YOUR 
    github info! You will need to understand the structure of this 
@@ -137,11 +110,11 @@ const elementTags = [
     name: "profile",
     tagName: "p",
     props: {
-      textContent: "Profile"
+      textContent: "Profile: "
     }
   },
   {
-    name: "url",
+    name: "html_url",
     tagName: "a",
     props: {
       href: ""
@@ -176,12 +149,13 @@ function splicer(data, skeleton) {
   // loops through each element in skeleton
   skeleton.forEach(item => {
     // checks if the items name is a key in data
-    if (item.name in dummy_data) {
+    if (item.name in data) {
       // if skeleton item is a element with a textContent property the the items props subobject has it's
       if ("textContent" in item.props) {
         item.props[`textContent`] += data[item.name];
       } else if ("href" in item.props) {
         item.props["href"] = data[item.name];
+        item.props.textContent = data.login;
       } else if ("src" in item.props) {
         item.props["src"] = data[item.name];
       }
@@ -201,7 +175,8 @@ function creator(obj) {
 function stitcher(tagList, loop = 1) {
   const tempArray = [];
   let parent = "",
-    child = "";
+    child = "",
+    profile = "";
   tagList.forEach((element, index) => {
     if (element.tagName == parent.tagName) {
       tempArray.push(parent);
@@ -210,6 +185,13 @@ function stitcher(tagList, loop = 1) {
       parent = element;
     } else {
       child = element;
+      if (child.textContent == "Profile: ") {
+        profile = child;
+      }
+      if (child.tagName == "A") {
+        profile.append(child);
+        child = profile;
+      }
       parent.append(child);
     }
   });
@@ -218,17 +200,15 @@ function stitcher(tagList, loop = 1) {
   return tempVar;
 }
 
-// testing
 function cardConstructor(data, skeleton) {
   let constructArray = splicer(data, skeleton);
   constructArray.forEach(
     (element, index) => (constructArray[index] = creator(element))
   );
   const card = stitcher(constructArray);
-  console.log(card);
+  document.querySelector(".cards").append(card);
 }
 
-cardConstructor(dummy_data, elementTags);
 // const newArray = splicer(dummy_data, elementTags);
 // const newArray1 = newArray.map(element => {
 //   return creator(element);
