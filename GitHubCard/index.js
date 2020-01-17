@@ -169,13 +169,17 @@ const elementTags = [
     }
   }
 ];
+// Takes 2 data MediaStreamAudioSourceNode, axios data(data) and an array built of appropriate objects(skeleton), returns an array of objects
 
 function splicer(data, skeleton) {
   templateArray = [];
+  // loops through each element in skeleton
   skeleton.forEach(item => {
+    // checks if the items name is a key in data
     if (item.name in dummy_data) {
+      // if skeleton item is a element with a textContent property the the items props subobject has it's
       if ("textContent" in item.props) {
-        item.props[`textContent`] = data[item.name];
+        item.props[`textContent`] += data[item.name];
       } else if ("href" in item.props) {
         item.props["href"] = data[item.name];
       } else if ("src" in item.props) {
@@ -186,23 +190,52 @@ function splicer(data, skeleton) {
   });
   return templateArray;
 }
+// takes a single Object and  returns a html tag element.
+// Object must have a tagName property, may have an option props property filled with properties for returned tag (className,textContent,etc)
 
 function creator(obj) {
-  console.log(obj);
+  // console.log(obj);
   return Object.assign(document.createElement(obj.tagName), obj.props || {});
 }
-function stitcher(parent, child = "", temp = "") {
-  // takes a parent and child and compares them
-  // checks if there is a child
-  // checks if child is a div, if it is a div need to move current parent into temp then rerun function
-  // return parent
+
+function stitcher(tagList, loop = 1) {
+  const tempArray = [];
+  let parent = "",
+    child = "";
+  tagList.forEach((element, index) => {
+    if (element.tagName == parent.tagName) {
+      tempArray.push(parent);
+    }
+    if (element.tagName == "DIV") {
+      parent = element;
+    } else {
+      child = element;
+      parent.append(child);
+    }
+  });
+  tempVar = tempArray[0];
+  tempVar.append(parent);
+  return tempVar;
 }
 
-const newArray = splicer(dummy_data, elementTags);
-const newArray1 = newArray.map(element => {
-  return creator(element);
-});
-console.log(newArray1);
+// testing
+function cardConstructor(data, skeleton) {
+  let constructArray = splicer(data, skeleton);
+  constructArray.forEach(
+    (element, index) => (constructArray[index] = creator(element))
+  );
+  const card = stitcher(constructArray);
+  console.log(card);
+}
+
+cardConstructor(dummy_data, elementTags);
+// const newArray = splicer(dummy_data, elementTags);
+// const newArray1 = newArray.map(element => {
+//   return creator(element);
+// });
+
+// console.log(stitcher(newArray1));
+// console.log(newArray1);
 // console.log(newArray[0].tagName == newArray[2].tagName);
 
 // stitcher.map(item => {
