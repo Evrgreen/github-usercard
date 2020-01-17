@@ -4,16 +4,20 @@
 */
 
 // const dummy_data = [];
-axios
+axios //requests my user data from the github API
   .get(`https://api.github.com/users/evrgreen`)
   .then(response => {
     cardConstructor(response.data, elementTags);
-    return axios.get(response.data.followers_url);
+    return axios.get(response.data.followers_url); //axios request to my follower page
   })
   .then(response => {
-    console.log(response.data);
-    response.data.forEach(dataset => {
-      cardConstructor(dataset.data);
+    Array.from(response.data).forEach(dataSet => {
+      axios //loops through each memeber of my followers retrieved from previous axios call and places an axios request for their user page
+        .get(`https://api.github.com/users/${dataSet.login}`)
+        .then(response => {
+          console.log(response);
+          cardConstructor(response.data, elementTags);
+        });
     });
   })
   .catch(error => {
@@ -142,33 +146,36 @@ const elementTags = [
     }
   }
 ];
-// Takes 2 data MediaStreamAudioSourceNode, axios data(data) and an array built of appropriate objects(skeleton), returns an array of objects
 
+// Takes 2 data MediaStreamAudioSourceNode, axios data(data) and an array built of appropriate objects(skeleton), returns an array of objects
 function splicer(data, skeleton) {
-  templateArray = [];
+  let templateArray = [];
   // loops through each element in skeleton
-  skeleton.forEach(item => {
+  templateArray = skeleton.map((item, index) => {
     // checks if the items name is a key in data
     if (item.name in data) {
-      // if skeleton item is a element with a textContent property the the items props subobject has it's
+      // if skeleton item is a element with a textContent property the the items nested props objects textConent is updated with value from data
       if ("textContent" in item.props) {
-        item.props[`textContent`] += data[item.name];
-      } else if ("href" in item.props) {
+        item.props[`textContent`] = data[item.name];
+      } // if skeleton item is a element with a href property then the items nested props objects href is updated with value from data
+      else if ("href" in item.props) {
         item.props["href"] = data[item.name];
         item.props.textContent = data.login;
-      } else if ("src" in item.props) {
+      } // if skeleton item is a element with a textContent property the the items nested props objects textConent is updated with value from data
+      else if ("src" in item.props) {
         item.props["src"] = data[item.name];
       }
     }
-    templateArray.push(item);
+    return item;
   });
+
   return templateArray;
 }
+
 // takes a single Object and  returns a html tag element.
 // Object must have a tagName property, may have an option props property filled with properties for returned tag (className,textContent,etc)
 
 function creator(obj) {
-  // console.log(obj);
   return Object.assign(document.createElement(obj.tagName), obj.props || {});
 }
 
@@ -201,26 +208,16 @@ function stitcher(tagList, loop = 1) {
 }
 
 function cardConstructor(data, skeleton) {
-  let constructArray = splicer(data, skeleton);
+  let constructArray = splicer(data, [...skeleton]);
+
   constructArray.forEach(
     (element, index) => (constructArray[index] = creator(element))
   );
+
   const card = stitcher(constructArray);
+
   document.querySelector(".cards").append(card);
 }
-
-// const newArray = splicer(dummy_data, elementTags);
-// const newArray1 = newArray.map(element => {
-//   return creator(element);
-// });
-
-// console.log(stitcher(newArray1));
-// console.log(newArray1);
-// console.log(newArray[0].tagName == newArray[2].tagName);
-
-// stitcher.map(item => {
-//   return;
-// });
 /* List of LS Instructors Github username's: 
   tetondan
   dustinmyers
